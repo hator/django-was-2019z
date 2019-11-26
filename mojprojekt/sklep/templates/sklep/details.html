@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Szczegóły produktu {{ product.name }}{% endblock %}
+{% block content %}
+  <h2>{{ product.name }}</h2>
+  <ul>
+    <li>
+        <p>Cena: {{ product.price }} zł</p>
+    </li>
+    <li>
+        <p>{{ product.description }}</p>
+    </li>
+    <li>
+        <p>Waga: {{ product.weight }}</p>
+    </li>
+  </ul>
+{% endblock %}

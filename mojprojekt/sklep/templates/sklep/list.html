@@ -5,7 +5,7 @@
   <ul>
       {% for p in products %}
         <li>
-            <h3>{{ p.name }}</h3>
+            <h3><a href="/product/{{ p.id }}">{{ p.name }}</a></h3>
             <p>Cena: {{ p.price }}</p>
         </li>
       {% endfor %}
