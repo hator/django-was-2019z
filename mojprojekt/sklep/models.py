@@ -20,3 +20,10 @@ class Order(models.Model):
     name = models.CharField(max_length=64)
     address = models.CharField(max_length=128)
     delivery = models.CharField(max_length=64)
+    ordered_products = models.ManyToManyField("Product", through="OrderedProduct")
+
+
+class OrderedProduct(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.PROTECT)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    amount = models.IntegerField(default=1)
