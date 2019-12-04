@@ -23,10 +23,9 @@ def product_details(request, product_id):
     )
 
 
-def index(request, tekst):
+def index(request):
     return render(
         request,
-        "sklep/glowna.html",
-        {"imie_klienta": tekst}
+        "sklep/index.html"
     )
 
