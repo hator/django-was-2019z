@@ -1,5 +1,6 @@
-from django.shortcuts import render
-from .models import Product
+from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
+from .models import Product, Order
 
 
 def product_list(request):
@@ -29,3 +30,8 @@ def index(request):
         "sklep/index.html"
     )
 
+
+def order_details(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+    total_price = order.get_total_price()
+    return HttpResponse(total_price)
