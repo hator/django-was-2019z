@@ -29,6 +29,7 @@ class Order(models.Model):
     delivery = models.CharField(max_length=64)
     ordered_products = models.ManyToManyField("Product", through="OrderedProduct")
 
+
 class OrderedProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)

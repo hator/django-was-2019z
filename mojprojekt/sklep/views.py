@@ -1,5 +1,7 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
+
+from .forms import OrderForm
 from .models import Product, Order
 
 
@@ -29,6 +31,22 @@ def index(request):
         request,
         "sklep/index.html"
     )
+
+
+def order(request):
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            order = Order(
+                name=form.cleaned_data['name'],
+                address=form.cleaned_data['address'],
+                delivery=form.cleaned_data['delivery']
+            )
+            order.save()
+            return HttpResponseRedirect('/order/'+str(order.id))
+    else:
+        form = OrderForm()
+    return render(request, "sklep/order_form.html", {"form": form})
 
 
 def order_details(request, order_id):
