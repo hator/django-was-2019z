@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Szczegóły zamówienia{% endblock %}
+{% block content %}
+    <h1>Zamówienie {{ order_id }}</h1>
+    <h2>Całkowity koszt: {{ total_price }}</h2>
+    <ul>
+    {% for ord_product in ordered_products %}
+        <li>{{ ord_product.product.name }} ({{ ord_product.product.price }}) x {{ ord_product.amount }} szt</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

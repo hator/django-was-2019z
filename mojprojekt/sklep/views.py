@@ -1,8 +1,8 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 
 from .forms import OrderForm
-from .models import Product, Order
+from .models import Product, Order, OrderedProduct
 
 
 def product_list(request):
@@ -52,4 +52,8 @@ def order(request):
 def order_details(request, order_id):
     order = get_object_or_404(Order, pk=order_id)
     total_price = order.get_total_price()
-    return HttpResponse(total_price)
+
+    ordered_products = OrderedProduct.objects.filter(order=order)
+
+    return render(request, "sklep/order_details.html",
+                  {"total_price": total_price, "ordered_products": ordered_products})
