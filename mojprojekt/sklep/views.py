@@ -74,3 +74,25 @@ def complaint(request):
 def complaint_details(request, complaint_id):
     complaint = get_object_or_404(Complaint, pk=complaint_id)
     return render(request, "sklep/complaint_details.html", {"complaint": complaint})
+
+
+def add_to_cart(request):
+    if request.method == "POST":
+        if 'cart' not in request.session:
+            request.session['cart'] = []
+        request.session['cart'].append(request.POST['item_id'])
+        request.session.modified = True
+
+    return HttpResponseRedirect('/cart')
+
+
+def cart(request):
+    if 'cart' not in request.session:
+        request.session['cart'] = []
+
+    products_in_cart = []
+    for item_id in request.session['cart']:
+        product = Product.objects.get(pk=item_id)
+        products_in_cart.append(product)
+
+    return render(request, "sklep/cart.html", {"products": products_in_cart})

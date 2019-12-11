@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Twój koszyk{% endblock %}
+{% block content %}
+    {% if products %}
+        <ul>
+            {% for product in products %}
+                <li>{{ product.name }} ({{ product.price }})</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Koszyk jest pusty</p>
+    {% endif %}
+    <p><a href="/order/">Złóż zamówienie</a></p>
+    <p><a href="/products/">Przejdź do listy produktów</a></p>
+{% endblock %}
