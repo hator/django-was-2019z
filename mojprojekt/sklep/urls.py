@@ -7,5 +7,7 @@ urlpatterns = [
     path("product/<int:product_id>", views.product_details),
     path("order/", views.order),
     path("order/<int:order_id>", views.order_details),
+    path("complaint/", views.complaint),
+    path("complaint/<int:complaint_id>", views.complaint_details),
     path("", views.index)
 ]

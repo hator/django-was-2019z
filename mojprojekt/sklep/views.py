@@ -1,8 +1,8 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 
-from .forms import OrderForm
-from .models import Product, Order, OrderedProduct
+from .forms import OrderForm, ComplaintForm
+from .models import Product, Order, OrderedProduct, Complaint
 
 
 def product_list(request):
@@ -57,3 +57,20 @@ def order_details(request, order_id):
 
     return render(request, "sklep/order_details.html",
                   {"total_price": total_price, "ordered_products": ordered_products})
+
+
+def complaint(request):
+    if request.method == "POST":
+        form = ComplaintForm(request.POST)
+        if form.is_valid():
+            complaint = Complaint(name=form.cleaned_data['name'], message=form.cleaned_data['message'])
+            complaint.save()
+            return HttpResponseRedirect('/complaint/'+str(complaint.id))
+    else:
+        form = ComplaintForm()
+    return render(request, "sklep/complaint_form.html", {"form": form})
+
+
+def complaint_details(request, complaint_id):
+    complaint = get_object_or_404(Complaint, pk=complaint_id)
+    return render(request, "sklep/complaint_details.html", {"complaint": complaint})

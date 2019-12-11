@@ -34,3 +34,8 @@ class OrderedProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     amount = models.IntegerField(default=1)
+
+
+class Complaint(models.Model):
+    name = models.CharField(max_length=64)
+    message = models.CharField(max_length=255)
