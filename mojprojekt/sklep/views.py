@@ -34,6 +34,8 @@ def index(request):
 
 
 def order(request):
+    products_to_order = _get_products_in_cart(request)
+
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
@@ -43,10 +45,22 @@ def order(request):
                 delivery=form.cleaned_data['delivery']
             )
             order.save()
+
+            # Dodajemy wszystkie produkty z koszyka do zamowienia
+            for product in products_to_order:
+                OrderedProduct(
+                    product=product,
+                    order=order,
+                    amount=1
+                ).save()
+
+            request.session['cart'] = []    # Czyscimy koszyk
+
             return HttpResponseRedirect('/order/'+str(order.id))
     else:
         form = OrderForm()
-    return render(request, "sklep/order_form.html", {"form": form})
+
+    return render(request, "sklep/order_form.html", {"form": form, "products": products_to_order})
 
 
 def order_details(request, order_id):
@@ -86,13 +100,14 @@ def add_to_cart(request):
     return HttpResponseRedirect('/cart')
 
 
-def cart(request):
-    if 'cart' not in request.session:
-        request.session['cart'] = []
-
+def _get_products_in_cart(request):
     products_in_cart = []
-    for item_id in request.session['cart']:
+    for item_id in request.session.get('cart', []):
         product = Product.objects.get(pk=item_id)
         products_in_cart.append(product)
+    return products_in_cart
 
+
+def cart(request):
+    products_in_cart = _get_products_in_cart(request)
     return render(request, "sklep/cart.html", {"products": products_in_cart})
